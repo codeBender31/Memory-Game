@@ -1,3 +1,10 @@
+//
+//  Memory_GameApp.swift
+//  Memory Game
+//
+//  Created by Bender on 3/20/24.
+//
+
 import SwiftUI
 
 struct Card: Identifiable {
@@ -54,10 +61,14 @@ struct ContentView: View {
                 newGame()
             }
             .padding()
+            .background(Color.green)
+            .foregroundColor(.white)
+            .clipShape(Capsule())
         }
         .onAppear {
             newGame()
         }
+        
     }
     
     func flipCard(_ card: Card) {
@@ -67,27 +78,29 @@ struct ContentView: View {
         
         if let potentialMatchIndex = indexOfTheOneAndOnlyFaceUpCard {
             if cards[index].content == cards[potentialMatchIndex].content {
-                // Match found
-                cards[index].isMatched = true
-                cards[potentialMatchIndex].isMatched = true
+                // Introduce a delay before marking the cards as matched
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // Adjust the delay time as needed
+                    self.cards[index].isMatched = true
+                    self.cards[potentialMatchIndex].isMatched = true
+                    self.indexOfTheOneAndOnlyFaceUpCard = nil // Reset the index
+                }
             } else {
-                // No match, schedule both cards to flip back down after a delay
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                // If they don't match, flip both cards back down after a delay
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { // This delay allows users to see the second card
                     self.cards[index].isFaceUp = false
                     self.cards[potentialMatchIndex].isFaceUp = false
                 }
+                self.indexOfTheOneAndOnlyFaceUpCard = nil // Reset the index
             }
-            // Reset the index since we've now considered the second card
-            self.indexOfTheOneAndOnlyFaceUpCard = nil
         } else {
-            // First card flipped, close all others
+            // If no card or only one card is face up, make sure all other cards are face down
             for flipDownIndex in cards.indices where flipDownIndex != index {
                 cards[flipDownIndex].isFaceUp = false
             }
-            // Mark this card as the only one face up
-            indexOfTheOneAndOnlyFaceUpCard = index
+            indexOfTheOneAndOnlyFaceUpCard = index // Mark this card as the only one face up
         }
     }
+
 
     
     func newGame() {
