@@ -43,14 +43,13 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-Here is a reminder on how to embed Loom videos on GitHub. Feel free to remove this reminder once you upload your README. 
-
 ![Alt text](https://github.com/codeBender31/Memory-Game/blob/main/Memory%20Game/MemoryGame.gif)
 
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+### Any challenges encountered while building the app.
+
 The challenges I faced included getting used to SwiftUI but I found it more intuitive than using Storyboard elements.
 ## License
 
